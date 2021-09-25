@@ -1,0 +1,20 @@
+config:
+  use_colors: true
+  send_anonymous_usage_stats: False
+
+default:
+    target: dev
+    outputs:
+      dev:
+        type: spark
+        threads: 8
+
+        method: odbc
+        driver: /opt/simba/spark/lib/64/libsparkodbc_sb64.so
+        schema: "{{ env_var('DBT_DATABRICKS_DATABASE') }}"
+        host: "{{ env_var('DBT_DATABRICKS_HOST') }}"
+        token: "{{ env_var('DBT_DATABRICKS_TOKEN') }}"
+        endpoint: "{{ env_var('DBT_DATABRICKS_ENDPOINT') }}"
+        port: 443
+        connect_retries: 20
+        connect_timeout: 30

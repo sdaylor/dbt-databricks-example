@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "dbt-databricks-example"
+version = "0.1.0"
+description = ""
+authors = ["Sean Daylor <sdaylor@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "~=3.8.10"
+dbt = "~=0.20.2"
+dbt-spark = {version = "~=0.20.2", extras = ["ODBC"]}
+pyodbc = "~=4.0.32"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,39 @@
+name: Seed, Run, Test
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    name: Main CI
+    runs-on: ubuntu-latest
+    env:
+      DBT_PROFILES_DIR: .config
+      DBT_DATABRICKS_HOST: ${{ secrets.DBT_DATABRICKS_HOST_TEST }}
+      DBT_DATABRICKS_DATABASE: dbt_dev_${{ github.actor }}
+      DBT_DATABRICKS_ENDPOINT: ${{ secrets.DBT_DATABRICKS_ENDPOINT_TEST }}
+      DBT_DATABRICKS_TOKEN: ${{ secrets.DBT_DATABRICKS_TOKEN_TEST }}
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: seed
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt seed --full-refresh"
+
+      - name: dbt run
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt run"
+
+      - name: test
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt test"

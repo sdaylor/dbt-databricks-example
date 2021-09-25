@@ -1,0 +1,50 @@
+name: Seed, Run, Test and Docs
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Main CI
+    runs-on: ubuntu-latest
+    env:
+      DBT_PROFILES_DIR: .config
+      DBT_DATABRICKS_HOST: ${{ secrets.DBT_DATABRICKS_HOST_PROD }}
+      DBT_DATABRICKS_DATABASE: ${{ secrets.DBT_DATABRICKS_DATABASE_PROD }}
+      DBT_DATABRICKS_ENDPOINT: ${{ secrets.DBT_DATABRICKS_ENDPOINT_PROD }}
+      DBT_DATABRICKS_TOKEN: ${{ secrets.DBT_DATABRICKS_TOKEN_PROD }}
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: seed
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt seed --full-refresh"
+
+      - name: dbt run
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt run"
+
+      - name: test
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt test"
+
+      - name: generate docs
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt docs generate"
+
+      - name: deploy docs 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: target

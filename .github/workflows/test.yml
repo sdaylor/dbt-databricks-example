@@ -10,18 +10,20 @@ on:
 
 jobs:
   build:
-    name: Main CI
+    name: Test CI
     runs-on: ubuntu-latest
     env:
       DBT_PROFILES_DIR: .config
       DBT_DATABRICKS_HOST: ${{ secrets.DBT_DATABRICKS_HOST_TEST }}
-      DBT_DATABRICKS_DATABASE: dbt_dev_${{ github.actor }}
       DBT_DATABRICKS_ENDPOINT: ${{ secrets.DBT_DATABRICKS_ENDPOINT_TEST }}
       DBT_DATABRICKS_TOKEN: ${{ secrets.DBT_DATABRICKS_TOKEN_TEST }}
 
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
+
+      - name: Set database name
+        run: echo "DBT_DATABRICKS_DATABASE=$(echo dbt_ci_$(date +'%Y%m%d')_$(echo ${GITHUB_SHA} | cut -c1-8))" >> $GITHUB_ENV
 
       - name: seed
         uses: sdaylor/dbt-databricks-action@main
@@ -37,3 +39,8 @@ jobs:
         uses: sdaylor/dbt-databricks-action@main
         with:
           dbt_command: "dbt test"
+
+      - name: CI Cleanup
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt run-operation drop_db --args '{db_name: $DBT_DATABRICKS_DATABASE}'"

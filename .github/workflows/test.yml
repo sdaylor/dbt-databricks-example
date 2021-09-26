@@ -41,6 +41,7 @@ jobs:
           dbt_command: "dbt test"
 
       - name: CI Cleanup
+        if: always()
         uses: sdaylor/dbt-databricks-action@main
         with:
           dbt_command: "dbt run-operation drop_db --args '{db_name: $DBT_DATABRICKS_DATABASE}'"

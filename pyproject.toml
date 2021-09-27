@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "dbt-databricks-example"
 version = "0.1.0"
-description = ""
+description = "An example dbt project for Databricks"
 authors = ["Sean Daylor <sdaylor@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
@@ -9,6 +9,10 @@ python = "~=3.8.10"
 dbt = "~=0.20.2"
 dbt-spark = {version = "~=0.20.2", extras = ["ODBC"]}
 pyodbc = "~=4.0.32"
+sqlfluff = "~=0.6.6"
+pytest = "~=6.2.5"
+hypothesis = "~=6.23.0"
+pre-commit = "~=2.15.0"
 
 [tool.poetry.dev-dependencies]
 

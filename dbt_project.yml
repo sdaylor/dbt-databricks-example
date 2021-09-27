@@ -28,3 +28,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 # These settings can be overridden in the individual model files
 models:
   materialized: view
+  file_format: delta
+  # Created tables use the specified `location_root` directory to store its data. The table alias is appended to it.
+  # location_root: /mnt/datalake/curated/

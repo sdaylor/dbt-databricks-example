@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: example
+    description: Example model
+    columns:
+      - name: demo
+        description: Demo column
+        tests:
+          - not_null

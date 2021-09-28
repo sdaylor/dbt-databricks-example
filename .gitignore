@@ -10,7 +10,6 @@ venv/
 .venv
 env/
 
-
 # VS Code
 .vscode/
 
@@ -23,3 +22,6 @@ logs/
 
 # Python cache
 __pycache__
+
+# Pyenv
+.python-version

@@ -3,7 +3,13 @@
 This repo provides scaffolding for dbt projects using Databricks as a warehouse.
 
 ## Local Development
-To get started, first install Poetry and run `poetry install` to build the virtual env with the necessary dependencies. `poetry shell` will activate this virtual environment. If you have not previously installed dbt, copy `./.config/profiles.yml` to `$HOME/.dbt/` and replace `schema`, `host`, `token`, and `endpoint` with your Databricks connection details. If you have not previously installed the Spark Simba driver necessary for ODBC connections, [download and install the driver](https://databricks.com/spark/odbc-drivers-download) and replace `driver` with the path to your driver installation.
+To get started:
+1. Install [Poetry](https://python-poetry.org/docs/#installation) and [pyenv](https://github.com/pyenv/pyenv-installer)
+2. Clone this repo and change directory to it
+3. Run `poetry install` to build the virtual env with the necessary dependencies. `poetry shell` will activate this virtual environment. If you don't have a matching Python version, run `pyenv install 3.8.12` and `pyenv local 3.8.12`, and then try `poetry install` again.
+4. If you have not previously installed dbt, copy `/.config/profiles.yml` to `$HOME/.dbt/` and replace the data for `schema`, `host`, `token`, and `endpoint` with your Databricks connection details.
+5. If you have not previously installed the Spark Simba driver necessary for ODBC connections, [download and install the driver](https://databricks.com/spark/odbc-drivers-download) and replace `driver` with the path to your driver installation.
+6. Now you should be all set! Give it a whirl and run `dbt run` and `dbt test`!
 
 This repository also makes use of [pre-commit hooks](https://github.com/offbi/pre-commit-dbt) for dbt. The `.pre-commit-config.yaml` contains a list of hooks to be run before every commit. Optionally, run `pre-commit install` to set up the git hook scripts. With this, pre-commit will run automatically on `git commit`. You can also manually run `pre-commit run` after you stage all files you want to run. Or `pre-commit run --all-files` to run the hooks against all of the files (not only staged).
 

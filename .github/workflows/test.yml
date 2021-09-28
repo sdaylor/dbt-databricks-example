@@ -44,4 +44,4 @@ jobs:
         if: always()
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt run-operation drop_db --args '{db_name: $DBT_DATABRICKS_DATABASE}'"
+          dbt_command: "dbt run-operation clean_ci_db --args '{db_name: $DBT_DATABRICKS_DATABASE}'"

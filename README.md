@@ -17,6 +17,7 @@ This repository also makes use of [pre-commit hooks](https://github.com/offbi/pr
 This project ships with two Github Actions workflows:
 * `main.yml`: Runs on pull/PR on `main` branch and seeds, runs, tests, and generates and deploys docs using production credentials. dbt documentation is deployed via Github Pages, which will need to be enabled for the repo.
 * `test.yml`: Runs on all other branches and seeds, runs, and tests using development credentials on a CI database target with the following name: `dbt_ci_YYYYMMDD_<SHORT SHA>`, where `SHORT SHA` is the the first eight characters of the commit SHA that triggered the workflow run.
+* `schedule.yml`: Runs and tests all models on production environment daily at 11am UTC.
 
 To use these workflows, create the following secrets with respective values:
 * DBT_DATABRICKS_HOST_PROD

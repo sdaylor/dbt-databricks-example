@@ -1,4 +1,4 @@
-name: Seed, Run, Test
+name: dev_run
 
 on:
   push:

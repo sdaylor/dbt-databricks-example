@@ -1,16 +1,12 @@
-name: main_run
+name: scheduled_run
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  schedule:
+    - cron:  '0 11 * * *'
 
 jobs:
   build:
-    name: Main CI
+    name: Schedule CI
     runs-on: ubuntu-latest
     env:
       DBT_PROFILES_DIR: .config
@@ -37,14 +33,3 @@ jobs:
         uses: sdaylor/dbt-databricks-action@main
         with:
           dbt_command: "dbt test"
-
-      - name: generate docs
-        uses: sdaylor/dbt-databricks-action@main
-        with:
-          dbt_command: "dbt docs generate"
-
-      - name: deploy docs 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          branch: gh-pages
-          folder: target

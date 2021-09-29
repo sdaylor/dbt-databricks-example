@@ -23,28 +23,47 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
+        # Fetch production manifest file
+      - uses: fixpoint/azblob-download-artifact@master
+        with:
+          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          name: dbt-target-prod
+          path: prod-run-artifacts
+
+        # Generate seeds
       - name: seed
         uses: sdaylor/dbt-databricks-action@main
         with:
           dbt_command: "dbt seed --full-refresh"
 
+        # Run new dbt models and downstreams
       - name: dbt run
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt run"
+          dbt_command: "dbt run -m state:modified+ --state prod-run-artifacts"
 
+        # Run modified tests, tests for modified models, and tests for downstream models
       - name: test
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt test"
+          dbt_command: "dbt test -m state:modified+ --state prod-run-artifacts"
 
+        # Generate dbt documentation files
       - name: generate docs
         uses: sdaylor/dbt-databricks-action@main
         with:
           dbt_command: "dbt docs generate"
 
+        # Deploy dbt documentation to Github Pages
       - name: deploy docs 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
           folder: target
+
+        # Upload updated manifest artifact to Azure Storage
+      - uses: fixpoint/azblob-upload-artifact@master
+        with:
+          connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          name: dbt-target-prod
+          path: target

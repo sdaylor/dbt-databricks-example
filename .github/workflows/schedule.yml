@@ -19,17 +19,12 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
-      - name: seed
-        uses: sdaylor/dbt-databricks-action@main
-        with:
-          dbt_command: "dbt seed --full-refresh"
-
       - name: dbt run
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt run"
+          dbt_command: "dbt run --models config.materialized:incremental"
 
       - name: test
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt test"
+          dbt_command: "dbt test --models config.materialized:incremental"

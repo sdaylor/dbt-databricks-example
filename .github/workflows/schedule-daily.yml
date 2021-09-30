@@ -1,4 +1,4 @@
-name: scheduled_run
+name: scheduled_run_daily
 
 on:
   schedule:
@@ -22,9 +22,9 @@ jobs:
       - name: dbt run
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt run --models config.materialized:incremental"
+          dbt_command: "dbt run -m tag:daily"
 
       - name: test
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt test --models config.materialized:incremental"
+          dbt_command: "dbt test -m tag:daily"

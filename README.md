@@ -27,3 +27,4 @@ To use these workflows, create the following secrets with respective values:
 * DBT_DATABRICKS_HOST_TEST
 * DBT_DATABRICKS_ENDPOINT_TEST
 * DBT_DATABRICKS_TOKEN_TEST
+* AZURE_STORAGE_CONNECTION_STRING

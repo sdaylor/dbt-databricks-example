@@ -1,0 +1,30 @@
+name: scheduled_run_weekly
+
+on:
+  schedule:
+    - cron:  '0 11 * * 1'
+
+jobs:
+  build:
+    name: Schedule CI
+    runs-on: ubuntu-latest
+    env:
+      DBT_PROFILES_DIR: .config
+      DBT_DATABRICKS_HOST: ${{ secrets.DBT_DATABRICKS_HOST_PROD }}
+      DBT_DATABRICKS_DATABASE: ${{ secrets.DBT_DATABRICKS_DATABASE_PROD }}
+      DBT_DATABRICKS_ENDPOINT: ${{ secrets.DBT_DATABRICKS_ENDPOINT_PROD }}
+      DBT_DATABRICKS_TOKEN: ${{ secrets.DBT_DATABRICKS_TOKEN_PROD }}
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: dbt run
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt run -m tag:weekly"
+
+      - name: test
+        uses: sdaylor/dbt-databricks-action@main
+        with:
+          dbt_command: "dbt test -m tag:weekly"

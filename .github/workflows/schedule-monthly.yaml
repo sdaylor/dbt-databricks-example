@@ -1,4 +1,4 @@
-name: scheduled_run_weekly
+name: scheduled_run_monthly
 
 on:
   schedule:

@@ -37,15 +37,15 @@ jobs:
       - name: seed
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt seed --full-refresh"
+          dbt_command: "dbt seed --select state:modified --full-refresh"
 
         # Run new dbt models and downstreams with defer flag
       - name: dbt run
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt run -m state:modified+ --defer --state prod-run-artifacts"
+          dbt_command: "dbt run -m state:modified+ --full-refresh --fail-fast --defer --state prod-run-artifacts"
 
-        # Run modified tests, tests for modified models, and tests for downstream models with defer flag
+        # Run tests that select from a new/modified resource or tests that are themselves new or modified
       - name: test
         uses: sdaylor/dbt-databricks-action@main
         with:

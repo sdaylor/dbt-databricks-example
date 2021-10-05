@@ -31,13 +31,13 @@ jobs:
       - name: seed
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt seed --full-refresh"
+          dbt_command: "dbt seed --select state:modified --full-refresh"
 
         # Run new dbt models and downstreams
       - name: dbt run
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt run -m state:modified+ --state prod-run-artifacts"
+          dbt_command: "dbt run -m state:modified+ --full-refresh --state prod-run-artifacts"
 
         # Run modified tests, tests for modified models, and tests for downstream models
       - name: test
@@ -57,6 +57,9 @@ jobs:
         with:
           branch: gh-pages
           folder: target
+
+      - name: clean target
+        run: cd target && ls | grep -v "manifest.json" | xargs rm -rf
 
         # Upload updated manifest artifact to Azure Storage
       - uses: fixpoint/azblob-upload-artifact@master

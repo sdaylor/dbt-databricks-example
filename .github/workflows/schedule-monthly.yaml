@@ -22,9 +22,9 @@ jobs:
       - name: dbt run
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt run -m tag:monthly"
+          dbt_command: "dbt run -m tag:monthly+"
 
       - name: test
         uses: sdaylor/dbt-databricks-action@main
         with:
-          dbt_command: "dbt test -m tag:monthly"
+          dbt_command: "dbt test -m tag:monthly+"
